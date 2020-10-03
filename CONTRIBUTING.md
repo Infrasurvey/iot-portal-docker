@@ -36,6 +36,9 @@
 -  Refresh database and populate: `php artisan migrate:fresh --seed`
 -  Populate database: `php artisan db:seed`
 
+### Laravel
+-  `php artisan make:controller ImageController`
+
 ### Open code
 -  Inside VS Code `Attach to running container -> php`
 
