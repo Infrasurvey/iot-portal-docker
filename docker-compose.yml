@@ -1,0 +1,67 @@
+version: '3.2'
+
+volumes:
+    db_volume_meteo:
+    node_modules_meteo:
+    app_code_meteo:
+    apache_site_meteo:
+
+services:
+    db:
+        container_name: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        stdin_open: true
+        tty: true
+        image: mysql
+        build:
+            context: ./mysql
+            dockerfile: Dockerfile
+        ports:
+           - '8002:3306'
+        volumes:
+            - db_volume_meteo:/var/lib/mysql
+            - app_code_meteo:/srv/www/          
+        networks:
+            - backend
+
+    php:
+        container_name: php
+        stdin_open: true
+        tty: true
+        image: php
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+        volumes:
+            - app_code_meteo:/srv/www/
+            - node_modules_meteo:/srv/www/node_modules
+            - ${PHP_CONFIG}/:/tmp/php-config/
+        networks:
+            - backend
+            
+    web:
+        stdin_open: true
+        tty: true
+        image: apache
+        build:
+            context: ./apache
+            dockerfile: Dockerfile
+        container_name: web
+        ports:
+            - "8080:80"
+        volumes:
+            - app_code_meteo:/srv/www/
+            - apache_site_meteo:/etc/apache2/sites-enabled
+            - ${APACHE_SITE}/:/etc/apache2/sites-available
+        depends_on:
+            - db
+            - php
+        environment:
+            FPM_HOST: php:9000
+        networks:
+            - frontend
+            - backend
+
+networks:
+    frontend:
+    backend:

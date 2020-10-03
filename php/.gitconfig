@@ -1,0 +1,85 @@
+[user]
+        name = Maulaz Tony
+        email = tony.maulaz@heig-vd.ch
+        
+[core]
+    editor = vim -f
+    ignorecase = false
+	autocrlf = false
+    filemode = false
+    compression = 0
+    whitespace = cr-at-eol
+	excludesfile = 
+
+[color "grep"]
+    linenumber = yellow bold
+    match = red
+    filename = green
+    function = magenta
+
+[color "status"]
+    untracked = blue
+    deleted = magenta    
+
+[grep]
+    patternType = perl
+    lineNumber = true
+
+[alias]
+    git = !exec git
+
+    # Checkout
+    o  = checkout
+    ob = checkout -b
+
+    # Move HEAD forward/Backward
+    fw = "!git log --pretty=oneline --all | grep -B1 `git rev-parse HEAD` | head -n1 | egrep -o '[a-f0-9]{20,}' | xargs git checkout"
+    bw = "!git checkout HEAD~1"
+
+    # Branches
+    b  = branch
+    lsb = "!git for-each-ref --sort=-committerdate refs/heads/ \
+        --format='%(color:blue)%(objectname:short)%(color:bold green) %(refname:short)%(color:reset) %(contents:subject)%(color:dim white) - %(authorname) %(color:reset)%(color:yellow)(%(color:green)%(committerdate:relative)%(color:reset)%(color:yellow))%(color:reset)'"
+    
+    # Commit
+    c   = commit
+    ca  = commit -a               # Stage all modified files
+    cm  = commit -m               # Commit with message
+    cam = commit -a -m            # Commit all modified files with message
+
+    # Status
+    s   = status -b            # Status in short format
+    su  = status -b -uno       # Doesn't show untracked files
+
+    # Diff
+    d = !"git diff-index --quiet HEAD -- || clear; git diff --patch-with-stat"
+    dh  = diff HEAD               # Diff Filesystem <-> HEAD
+    dc  = diff -C --cached        # Diff Staged     <-> HEAD
+    ds  = diff -C --ignore-space-at-eol --ignore-space-change
+    dt = difftool
+
+    # Grep
+    g = grep --show-function --heading --break -I
+
+    # Log / Tree
+    l = log -n30 --boundary --graph --pretty=format:'%C(bold blue)%h%C(bold green)%<|(20)% ar%C(reset)%C(white)% s %C(dim white)-% an%C(reset)%C(auto)% d%C(bold red)% N'
+    la = log -n30 --boundary --graph --pretty=format:'%C(bold blue)%h%C(bold green)%<|(20)% ai%C(reset)%C(white)% s %C(dim white)-% an%C(reset)%C(auto)% d%C(bold red)% N'
+
+    # Files
+    ls = ls-files
+
+    # Clean
+    x  = clean -xfd
+    xx = !git clean -xfd && git reset --hard HEAD
+
+    # Merge
+    m = merge
+    ma = merge --abort
+    mc = merge --continue
+    ms = merge --skip
+
+    # Reset
+    r = reset HEAD
+    rh = reset --hard HEAD
+[http]
+	sslVerify = false
