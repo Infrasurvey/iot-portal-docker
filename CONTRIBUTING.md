@@ -22,19 +22,33 @@
 
 ### Php
 -  `docker exec -it php bash`
--  set git name `git config --global user.name "<Your-Full-Name>"`
--  set git email `git config --global user.email "<your-email-address>"`
 -  `cd /srv/www`
 -  clone code `git clone https://github.com/... .`
--  ` chmod -R a+w storage/`
+-  if permission not good for `storage` : ` chmod -R a+w storage/`
 -  `composer install`
 -  `npm install`
 
 ### Develop
--  `npm run watch` : watch if js file change
+-  `npm run watch`: watch if js files change
+#### Inside php container
+-  Create database from laravel project: `php artisan migrate`
+-  Refresh database (delete and create): `php artisan migrate:fresh`
+-  Refresh database and populate: `php artisan migrate:fresh --seed`
+-  Populate database: `php artisan db:seed`
 
 ### Open code
 -  Inside VS Code `Attach to running container -> php`
 
 ### Access
   - `127.0.0.1:8080`
+
+### Docker
+-  `docker-compose up -d`
+-  `docker exec -it php bash`
+-  `docker container ls`
+-  `docker container prune`
+-  `docker system prune`
+
+### Alias bash
+-  `alias dcls='docker container ls --format "table {{.ID}}\t{{.Image}}\t{{.Names}}"'`
+-  `alias dexec='docker exec -it'`
