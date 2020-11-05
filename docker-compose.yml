@@ -33,9 +33,12 @@ services:
             context: ./php
             dockerfile: Dockerfile
         volumes:
-            - app_code_meteo:/srv/www/
+            - app_code_meteo:/srv/www/            
             - node_modules_meteo:/srv/www/node_modules
             - ${PHP_CONFIG}/:/tmp/php-config/
+            - type: bind
+              source: /mnt/c/ImportGeomon/Geomon/
+              target: /srv/ImportGeomon
         networks:
             - backend
             
