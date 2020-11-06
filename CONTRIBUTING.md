@@ -31,6 +31,7 @@
 ### Develop
 -  `npm run watch`: watch if js files change
 #### Inside php container
+-  Copy/Paste the ".env.example" file and rename the copy with the following name: ".env"
 -  Create database from laravel project: `php artisan migrate`
 -  Refresh database (delete and create): `php artisan migrate:fresh`
 -  Refresh database and populate: `php artisan migrate:fresh --seed`
