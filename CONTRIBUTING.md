@@ -7,7 +7,7 @@
 ### MYSQL
 - In a bash `docker exec -it mysql bash`
 - In the mysql container
-  -  `mysql -u root -p` (no secret)
+  -  `mysql -u root -p` (see file mysql/Dockerfile for password)
   -  Show user : `select Host,User from mysql.user;`
   -  `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'secret';`
   -  If not exist : `CREATE USER 'laravel'@'%' IDENTIFIED WITH mysql_native_password BY 'secret';`
@@ -23,8 +23,11 @@
 ### Php
 -  `docker exec -it php bash`
 -  `cd /srv/www`
--  clone code `git clone https://github.com/... .`
--  if permission not good for `storage` : ` chmod -R a+w storage/`
+-  `git init .`
+-  `git remote add -t \* -f origin https://github.com/guillaumeVolery/geomon-data-fetching.git`
+-  enter your github credentials
+-  `git checkout master`
+-  if permission not good for `storage` : `chmod -R a+w storage/`
 -  `composer install`
 -  `npm install`
 
