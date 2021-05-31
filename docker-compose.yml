@@ -24,6 +24,19 @@ services:
         networks:
             - backend
 
+    frontend:
+        container_name: frontend
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        ports:
+            - "8081:80"
+        volumes:
+            - ./frontend:/srv/www
+            - /srv/www/node_modules
+        networks:
+            - frontend
+            - backend  
     php:
         container_name: php
         stdin_open: true
@@ -41,7 +54,6 @@ services:
               target: /srv/ImportGeomon
         networks:
             - backend
-            
     web:
         stdin_open: true
         tty: true
@@ -63,8 +75,7 @@ services:
             FPM_HOST: php:9000
         networks:
             - frontend
-            - backend
-
+            - backend        
 networks:
     frontend:
     backend:
