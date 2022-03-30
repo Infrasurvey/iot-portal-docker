@@ -49,5 +49,6 @@ COPY .gitconfig /root/.gitconfig
 
 EXPOSE 9000
 
+
 #CMD /tmp/php-config/initphp.sh
 ENTRYPOINT ["/bin/sh", "-c", "/tmp/php-config/initphp.sh && php-fpm"]
