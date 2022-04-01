@@ -8,7 +8,8 @@ RUN apt-get update &&\
     apt-get install -y nodejs npm &&\
     apt-get install -y libjpeg-dev libsasl2-dev libldap2-dev libssl-dev libpng-dev &&\
     apt-get install -y libgmp-dev re2c libmhash-dev libmcrypt-dev file &&\
-    apt-get install -y libmcrypt-dev libpng-dev zlib1g-dev libxml2-dev libzip-dev  libonig-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev
+    apt-get install -y libmcrypt-dev libpng-dev zlib1g-dev libxml2-dev libzip-dev  libonig-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev &&\
+    apt-get install -y cron
 
 # La config de xdebug est automatiquement ajoutée dans fpm et cli
 # COPY xdebug.ini /etc/php/7.0/mods-available/xdebug.ini
@@ -48,7 +49,6 @@ COPY .bashrc /root/.bashrc
 COPY .gitconfig /root/.gitconfig
 
 EXPOSE 9000
-
 
 #CMD /tmp/php-config/initphp.sh
 ENTRYPOINT ["/bin/sh", "-c", "/tmp/php-config/initphp.sh && php-fpm"]
