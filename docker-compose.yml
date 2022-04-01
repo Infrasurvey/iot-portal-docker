@@ -1,85 +1,90 @@
 version: '3.2'
 
 volumes:
-    db_volume_meteo:
-    node_modules_meteo:
-    app_code_meteo:
-    apache_site_meteo:
+    db_volume:
+    node_modules:
+    frontend_code:
+    backend_code:
+    apache_site:
 
 services:
-    db:
-        container_name: mysql
-        command: --default-authentication-plugin=mysql_native_password
+    database:
+        container_name: iot-portal-database
+        image: iot-portal-database-image
         stdin_open: true
-        restart: always
         tty: true
-        image: mysql
+        restart: always
         build:
-            context: ./mysql
-            dockerfile: Dockerfile
+            context: ./
+            dockerfile: ./mysql/Dockerfile
         ports:
-           - '8002:3306'
-        volumes:
-            - db_volume_meteo:/var/lib/mysql
-            - app_code_meteo:/srv/www/          
+           - '8001:3306'
         networks:
             - backend
+        volumes:
+            - db_volume:/var/lib/mysql
+        command: --default-authentication-plugin=mysql_native_password
 
     frontend:
-        container_name: frontend
-        restart: always
-        build:
-            context: ./frontend
-            dockerfile: Dockerfile
-        ports:
-            - "80:80"
-        volumes:
-            - ./frontend:/srv/www
-            - /srv/www/node_modules
-        networks:
-            - frontend
-            - backend  
-    php:
-        container_name: php
+        container_name: iot-portal-frontend
+        image: iot-portal-frontend-image
         stdin_open: true
         tty: true
         restart: always
-        image: php
         build:
-            context: ./php
-            dockerfile: Dockerfile
+            context: ./
+            dockerfile: ./frontend/Dockerfile
+        ports:
+            - "8002:8080"
+        networks:
+            - frontend
+            - backend
         volumes:
-            - app_code_meteo:/srv/www/            
-            - node_modules_meteo:/srv/www/node_modules
+            - frontend_code:/srv/www/
+
+    backend:
+        container_name: iot-portal-backend
+        image: iot-portal-backend-image
+        stdin_open: true
+        tty: true
+        restart: always
+        networks:
+            - backend
+        build:
+            context: ./
+            dockerfile: ./php/Dockerfile
+        volumes:
+            - backend_code:/srv/www/
+            - node_modules:/srv/www/node_modules
             - ${PHP_CONFIG}/:/tmp/php-config/
             - type: bind
               source: /mnt/c/ImportGeomon/Geomon/
               target: /srv/ImportGeomon
-        networks:
-            - backend
+
     web:
+        container_name: web
+        image: web-image
         stdin_open: true
         tty: true
-        image: apache
         restart: always
         build:
-            context: ./apache
-            dockerfile: Dockerfile
-        container_name: web
+            context: ./
+            dockerfile: ./apache/Dockerfile
         ports:
-            - "8080:80"
-        volumes:
-            - app_code_meteo:/srv/www/
-            - apache_site_meteo:/etc/apache2/sites-enabled
-            - ${APACHE_SITE}/:/etc/apache2/sites-available
-        depends_on:
-            - db
-            - php
-        environment:
-            FPM_HOST: php:9000
+            - "8003:80"
         networks:
             - frontend
-            - backend        
+            - backend    
+        volumes:
+            - backend_code:/srv/www/
+            - apache_site:/etc/apache2/sites-enabled
+            - ${APACHE_SITE}/:/etc/apache2/sites-available
+        depends_on:
+            - database
+            - backend
+        environment:
+            FPM_HOST: php:9000
+
 networks:
     frontend:
     backend:

@@ -1,25 +1,26 @@
-FROM node:14 as build-stage
+FROM node:14-bullseye
 
-RUN npm install -g http-server
-#WORKDIR /usr/src/app/frontend
-WORKDIR /srv/www
+WORKDIR /srv/www/
 
-COPY package*.json ./
+RUN apt-get update &&\
+    apt-get install -y git
 
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
+COPY .bashrc /root/.bashrc
+COPY .gitconfig /root/.gitconfig
 
-RUN npm install
+EXPOSE 8080
+    # npm install -g http-server &&\
+    # curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 
-COPY . .
+# RUN npm install
 
-RUN npm run build
+# COPY . .
+# RUN npm run build
 
-FROM nginx:stable-alpine as production-stage
-COPY --from=build-stage /srv/www/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-#EXPOSE 8080
+# FROM nginx:stable-alpine as production-stage
+# COPY --from=build-stage /srv/www/dist /usr/share/nginx/html
+# EXPOSE 80
+# CMD ["nginx", "-g", "daemon off;"]
 
-#CMD ["npm", "run", "dev"]
-#CMD ["http-server","dist"]
+# CMD ["npm", "run", "dev"]
+# CMD ["http-server","dist"]

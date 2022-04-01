@@ -17,6 +17,9 @@ RUN a2enmod proxy_fcgi &&\
     a2enmod rewrite &&\
     a2dissite 000-default
 
+COPY .bashrc /root/.bashrc
+COPY .gitconfig /root/.gitconfig
+
 # WORKDIR /var/www/html
 ENTRYPOINT ["apachectl", "-D", "FOREGROUND"]
-#EXPOSE 80
+EXPOSE 80

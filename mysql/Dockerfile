@@ -1,4 +1,4 @@
-FROM mysql:5.7.29
+FROM mysql:8.0.28
 
 ENV MYSQL_ROOT_PASSWORD secret
 ENV MYSQL_DATABASE laravel

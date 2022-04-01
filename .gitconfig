@@ -1,6 +1,6 @@
 [user]
-        name = Volery Guillaume
-        email = guillaume.volery@heig-vd.ch
+    name = Volery Guillaume
+    email = guillaume.volery@heig-vd.ch
         
 [core]
     editor = vim -f
