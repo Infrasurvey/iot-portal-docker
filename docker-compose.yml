@@ -57,9 +57,9 @@ services:
             - backend_code:/srv/www/
             - node_modules:/srv/www/node_modules
             - ${PHP_CONFIG}/:/tmp/php-config/
-            - type: bind
-              source: /mnt/c/ImportGeomon/Geomon/
-              target: /srv/ImportGeomon
+            # - type: bind
+            #   source: /mnt/c/ImportGeomon/Geomon/
+            #   target: /srv/ImportGeomon
 
     web:
         container_name: web
@@ -83,7 +83,7 @@ services:
             - database
             - backend
         environment:
-            FPM_HOST: php:9000
+            FPM_HOST: iot-portal-backend:9000
 
 networks:
     frontend:
