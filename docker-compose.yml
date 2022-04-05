@@ -2,7 +2,6 @@ version: '3.2'
 
 volumes:
     db_volume:
-    node_modules:
     frontend_code:
     backend_code:
     apache_site:
@@ -55,11 +54,7 @@ services:
             dockerfile: ./php/Dockerfile
         volumes:
             - backend_code:/srv/www/
-            - node_modules:/srv/www/node_modules
             - ${PHP_CONFIG}/:/tmp/php-config/
-            # - type: bind
-            #   source: /mnt/c/ImportGeomon/Geomon/
-            #   target: /srv/ImportGeomon
 
     web:
         container_name: web
